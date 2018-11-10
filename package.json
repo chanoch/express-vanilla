@@ -1,0 +1,33 @@
+{
+  "name": "express-vanilla",
+  "version": "0.0.1",
+  "description": "A vanilla express server which uses helmet, supports CORS in dev, and rotates logs daily",
+  "main": "index.js",
+  "author": "chanoch <chanoch@seguroapp.co.uk>",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.3",
+    "helmet": "^3.14.0",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7",
+    "rate-limiter-flexible": "^0.18.3",
+    "winston": "^3.1.0",
+    "winston-daily-rotate-file": "^3.4.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chanoch/express-vanilla.git"
+  },
+  "keywords": [
+    "expressjs",
+    "vanilla",
+    "webserver",
+    "node"
+  ],
+  "bugs": {
+    "url": "https://github.com/chanoch/express-static/issues"
+  },
+  "homepage": "https://github.com/chanoch/express-static#readme"
+}
