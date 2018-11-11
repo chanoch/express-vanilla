@@ -1,11 +1,17 @@
-const assert = require('assert')
-
 const cors = require('cors')
 const path = require('path')
 const helmet = require('helmet')
 const morgan = require('morgan')
 const express = require('express')
 const logger = require('./utils/logger')
+
+const isObject = function(handlers) {
+  return !!handlers && handlers.constructor === Object
+}
+
+const isArray = function(handlers) {
+  return !!handlers && handlers.constructor === Array
+}
 
 /**
  * Initialise an express js server with helmet implemented for security, morgan for logging serving
@@ -29,17 +35,21 @@ const initialiseServer = async (arg1, arg2) => {
   /////////////////////////
 
   let options
-  let handlers // routers (request handlers) and middleware
+  let suppliedHandlers // routers (request handlers) and middleware
 
   if(Array.isArray(arg1)) {
-    handlers = arg1
+    suppliedHandlers = arg1
   } else {
     options = arg1
-    handlers = arg2
+    suppliedHandlers = arg2
   }
 
   const port = (options && options.port) ? options.port : process.env.PORT || '3000'
   const host = (options && options.host) ? options.host : process.env.HOST_ADDR || process.env.HOST || '0.0.0.0'
+  const morganOpts = (options && options.morganOpts) ? options.morganOpts : 'dev'
+
+  // accept ```handlers``` as object or array, convert ```handlers``` to array if required
+  const handlers = isArray(suppliedHandlers) ? suppliedHandlers : isObject(suppliedHandlers) ? [suppliedHandlers] : []
 
   ///////////////////
   // Configure server
@@ -54,7 +64,7 @@ const initialiseServer = async (arg1, arg2) => {
   }
 
   app.use(helmet())
-  app.use(morgan(opts))
+  app.use(morgan(morganOpts))
 
   ///////////////////
   // Serve statics
@@ -70,11 +80,16 @@ const initialiseServer = async (arg1, arg2) => {
   // - 3) override default/no router found handler
   // - 4) override error handler
   //////////////////////////////////////////////
-  arg2.forEach(handler => {
+  handlers.forEach(handler => {
     app.use(handler)    
   });
 
-  //////////////////////////////////////////////
+  // viewed at http://localhost:8080
+  app.get('/', function(req, res) {
+    res.sendFile('/public/index.html');
+  });
+
+//////////////////////////////////////////////
   // Catch 404 and forward to error handler
   //////////////////////////////////////////////
   app.use((req, res, next) => {
@@ -99,4 +114,4 @@ const initialiseServer = async (arg1, arg2) => {
   return server
 }
 
-export default initialiseServer
+module.exports = initialiseServer

@@ -1,6 +1,6 @@
 {
   "name": "express-vanilla",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "description": "A vanilla express server which uses helmet, supports CORS in dev, and rotates logs daily",
   "main": "index.js",
   "author": "chanoch <chanoch@seguroapp.co.uk>",
@@ -15,7 +15,12 @@
     "winston": "^3.1.0",
     "winston-daily-rotate-file": "^3.4.1"
   },
-  "devDependencies": {},
+  "scripts": {
+    "test": "nodemon test/"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chanoch/express-vanilla.git"
